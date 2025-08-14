@@ -28,13 +28,22 @@ def main_menu():
 
 @bot.message_handler(commands=["users"])
 def show_users(message):
-    if message.from_user.id != ADMIN_ID:
+    # Сразу приводим к int для надежности
+    if int(message.from_user.id) != ADMIN_ID:
         bot.reply_to(message, "Ты не админ!")
         return
+    
+    if not users:
+        bot.send_message(message.chat.id, "Пока нет зарегистрированных пользователей.")
+        return
+
     text = "Список пользователей:\n\n"
     for uid, info in users.items():
-        text += f"{uid} - {info['name']} ({info['username']}) - {info['bonus']} бонусов\n"
-    bot.send_message(message.chat.id, text)
+        text += f"ID: {uid}\nИмя: {info.get('name', '-')}\nUsername: {info.get('username', '-')}\nБонусы: {info.get('bonus', 0)}\n\n"
+
+    # Разбиваем на сообщения по 4000 символов, если пользователей много
+    for chunk in [text[i:i+4000] for i in range(0, len(text), 4000)]:
+        bot.send_message(message.chat.id, chunk)
 
 # Старт
 @bot.message_handler(commands=["start"])
