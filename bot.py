@@ -45,6 +45,10 @@ def show_users(message):
     for chunk in [text[i:i+4000] for i in range(0, len(text), 4000)]:
         bot.send_message(message.chat.id, chunk)
 
+@bot.message_handler(commands=["checkid"])
+def check_id(message):
+    bot.reply_to(message, f"Ваш ID: {message.from_user.id} ({type(message.from_user.id)})")
+
 # Старт
 @bot.message_handler(commands=["start"])
 def start(message):
