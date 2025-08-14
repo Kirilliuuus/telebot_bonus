@@ -5,7 +5,7 @@ from flask import Flask, request
 
 TOKEN = "8294147360:AAFY0qqmFnYfOOa6rM7gHGeB7uI7Zodw7sw"
 bot = telebot.TeleBot(TOKEN)
-WEBHOOK_URL = "https://ТВОЙ_ДОМЕН.onrender.com/webhook"
+WEBHOOK_URL = "https://telebot-bonus-2.onrender.com"
 
 DATA_FILE = "users.json"
 
