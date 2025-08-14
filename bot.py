@@ -6,7 +6,7 @@ from flask import Flask, request
 TOKEN = "8294147360:AAFY0qqmFnYfOOa6rM7gHGeB7uI7Zodw7sw"
 bot = telebot.TeleBot(TOKEN)
 WEBHOOK_URL = "https://telebot-bonus-2.onrender.com/webhook"
-
+ADMIN_ID = 573837604  # твой Telegram ID
 DATA_FILE = "users.json"
 
 # Загружаем данные
@@ -25,6 +25,16 @@ def main_menu():
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add("📊 Узнать баланс")
     return markup
+
+@bot.message_handler(commands=["users"])
+def show_users(message):
+    if message.from_user.id != ADMIN_ID:
+        bot.reply_to(message, "Ты не админ!")
+        return
+    text = "Список пользователей:\n\n"
+    for uid, info in users.items():
+        text += f"{uid} - {info['name']} ({info['username']}) - {info['bonus']} бонусов\n"
+    bot.send_message(message.chat.id, text)
 
 # Старт
 @bot.message_handler(commands=["start"])
